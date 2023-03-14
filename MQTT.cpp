@@ -18,39 +18,39 @@ namespace Emmqtt {
         uBit.serial.setRxBufferSize(size);
     }
 
-    //%
-    void emmqttEventOn(){
-        uBit.serial.eventOn(ManagedString('\r'), MicroBitSerialMode::ASYNC);
-    }
+    // //%
+    // void emmqttEventOn(){
+    //     uBit.serial.eventOn(ManagedString('\r'), MicroBitSerialMode::ASYNC);
+    // }
 
-    //%
-    void emmqttClearRxBuffer(){
-        uBit.serial.clearRxBuffer();
-    }
+    // //%
+    // void emmqttClearRxBuffer(){
+    //     uBit.serial.clearRxBuffer();
+    // }
 
-    //%
-    void emmqttClearTxBuffer(){
-        uBit.serial.clearTxBuffer();
-    }
+    // //%
+    // void emmqttClearTxBuffer(){
+    //     uBit.serial.clearTxBuffer();
+    // }
 
-    //%    
-    void forever_stubs(void *a) {
-        runAction0((Action)a);
-    }
+    // //%    
+    // void forever_stubs(void *a) {
+    //     runAction0((Action)a);
+    // }
 
-    //%
-    void emmqttforevers(Action a) {
-      if (a != 0) {
-        incr(a);
-        create_fiber(forever_stubs, (void*)a);
-      }
-    }
+    // //%
+    // void emmqttforevers(Action a) {
+    //   if (a != 0) {
+    //     incr(a);
+    //     create_fiber(forever_stubs, (void*)a);
+    //   }
+    // }
 
-    //%
-    void emmqttWriteString(StringData *text) {
-      if (!text) {
-          return;
-      }
-      uBit.serial.send(ManagedString(text));
-    }
+    // //%
+    // void emmqttWriteString(StringData *text) {
+    //   if (!text) {
+    //       return;
+    //   }
+    //   uBit.serial.send(ManagedString(text));
+    // }
 }

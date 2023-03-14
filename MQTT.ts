@@ -9,7 +9,7 @@ const EMMQTT_STR_TYPE_IS_NONE = ""
  */
 //% weight=10 color=#008B00 icon="\uf1eb" block="MQTT"
 namespace MQTT {
-    let rev: string;
+    // let rev: string;
     //serial
     let EMMQTT_SERIAL_INIT = EMMQTT_BOOL_TYPE_IS_FALSE
     let EMMQTT_SERIAL_TX = SerialPin.P2
@@ -33,14 +33,14 @@ namespace MQTT {
 	let EMMQTT_ALIYUN_DEVICENAME = EMMQTT_STR_TYPE_IS_NONE
 	let EMMQTT_ALIYUN_DEVICESECRET = EMMQTT_STR_TYPE_IS_NONE
     // //animation
-    let EMMQTT_WIFI_ICON = 1
+    // let EMMQTT_WIFI_ICON = 1
     let EMMQTT_MQTT_ICON = 1
 
     const mqttSubscribeHandlers: { [topic: string]: (message: string) => void } = {}
 
-    export class PacketaMqtt {
-        public message: string;
-    }
+    // export class PacketaMqtt {
+    //     public message: string;
+    // }
 
     //% advanced=true shim=Emmqtt::emmqttClearRxBuffer
     function emmqttClearRxBuffer(): void {
@@ -80,10 +80,10 @@ namespace MQTT {
     }
 
     function emmqtt_serial_init(): void {
-        let item = null;
-        item = serial.readString()
-        item = serial.readString()
-        item = serial.readString()
+        // let item = null;
+        // item = serial.readString()
+        // item = serial.readString()
+        // item = serial.readString()
         serial.redirect(
             EMMQTT_SERIAL_TX,
             EMMQTT_SERIAL_RX,
@@ -92,7 +92,7 @@ namespace MQTT {
         serial.setTxBufferSize(128);
         serial.setRxBufferSize(128);
         // obloqWriteString("\r")
-        item = serial.readString()
+        // item = serial.readString()
         EMMQTT_SERIAL_INIT = EMMQTT_BOOL_TYPE_IS_TRUE
         emmqttClearRxBuffer();
         emmqttClearTxBuffer();
@@ -166,7 +166,6 @@ namespace MQTT {
     //% subcategory="ALIYUNMQTT模式"
     export function em_mqtt_aliyun_connect(/*mqtt*/ serverIp: string, serverPort: number, productKey: string, deviceName: string, deviceSecret: string, clientId?: string, username?: string, clientPwd?: string
         ): void {
-       
         // Emmqtt_serial_init();
         // emqtt_connect_wifi();
         MQTT_CLIENT_ID = clientId;
@@ -226,8 +225,6 @@ namespace MQTT {
         }
         mqttSubscribeHandlers[topic] = handler;
     }
-
-
 
     function emqtt_connect_wifi(): void {
 		atReset();
@@ -328,8 +325,9 @@ namespace MQTT {
     let Emqtt_message_str = "";
     let count = 0;
     serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+
         Emqtt_message_str += serial.readString();
-        let size = Emqtt_message_str.length;
+        // let size = Emqtt_message_str.length;
         let item: string = Emqtt_message_str + "";
         if (item.indexOf("WIFI CONNECTED", 0) != -1) {
             EMMQTT_ANSWER_CMD = "MqttWifiConneted"
@@ -392,7 +390,6 @@ namespace MQTT {
             //  basic.showString(item);
             return
         }
-        
     });
 
     /**
