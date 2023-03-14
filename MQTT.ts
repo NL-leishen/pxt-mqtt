@@ -94,8 +94,8 @@ namespace MQTT {
         // obloqWriteString("\r")
         // item = serial.readString()
         EMMQTT_SERIAL_INIT = EMMQTT_BOOL_TYPE_IS_TRUE
-        emmqttClearRxBuffer();
-        emmqttClearTxBuffer();
+        // emmqttClearRxBuffer();
+        // emmqttClearTxBuffer();
     }
 
     /**
