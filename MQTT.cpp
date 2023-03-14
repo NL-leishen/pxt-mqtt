@@ -23,15 +23,15 @@ namespace Emmqtt {
     //     uBit.serial.eventOn(ManagedString('\r'), MicroBitSerialMode::ASYNC);
     // }
 
-    // //%
-    // void emmqttClearRxBuffer(){
-    //     uBit.serial.clearRxBuffer();
-    // }
+    //%
+    void emmqttClearRxBuffer(){
+        uBit.serial.clearRxBuffer();
+    }
 
-    // //%
-    // void emmqttClearTxBuffer(){
-    //     uBit.serial.clearTxBuffer();
-    // }
+    //%
+    void emmqttClearTxBuffer(){
+        uBit.serial.clearTxBuffer();
+    }
 
     // //%    
     // void forever_stubs(void *a) {
