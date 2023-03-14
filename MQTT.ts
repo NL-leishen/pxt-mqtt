@@ -1,12 +1,6 @@
 
 const EMMQTT_BOOL_TYPE_IS_TRUE = true
 const EMMQTT_BOOL_TYPE_IS_FALSE = false
-const EMMQTT_ERROR_TYPE_IS_SUCCE = 0
-const EMMQTT_ERROR_TYPE_IS_ERR = 1
-const EMMQTT_ERROR_TYPE_IS_WIFI_CONNECT_TIMEOUT = -1
-const EMMQTT_ERROR_TYPE_IS_WIFI_CONNECT_FAILURE = -2
-const EMMQTT_ERROR_TYPE_IS_MQTT_CONNECT_TIMEOUT = -4
-const EMMQTT_ERROR_TYPE_IS_MQTT_CONNECT_FAILURE = -5
 const EMMQTT_STR_TYPE_IS_NONE = ""
 
 
@@ -34,7 +28,6 @@ namespace MQTT {
     let HTTP_RESULT = EMMQTT_STR_TYPE_IS_NONE;
     
     let EMMQTT_ANSWER_CMD = EMMQTT_STR_TYPE_IS_NONE
-    let EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
 	//阿里云三要素
 	let EMMQTT_ALIYUN_PRODUCTKEY = EMMQTT_STR_TYPE_IS_NONE
 	let EMMQTT_ALIYUN_DEVICENAME = EMMQTT_STR_TYPE_IS_NONE
@@ -46,8 +39,6 @@ namespace MQTT {
     const mqttSubscribeHandlers: { [topic: string]: (message: string) => void } = {}
 
     export class PacketaMqtt {
-       
-        
         public message: string;
     }
 
@@ -60,13 +51,6 @@ namespace MQTT {
     function emmqttClearTxBuffer(): void {
         return
     }
-
-
-
-    function emmqttWriteString(text: string): void {
-        serial.writeString(text)
-    }
-
 
     function Em_mqtt_icon_display(): void {
         switch (EMMQTT_MQTT_ICON) {
@@ -97,8 +81,6 @@ namespace MQTT {
 
     function emmqtt_serial_init(): void {
         let item = null;
-        //First send data through usb, avoid the first data scrambled.
-        // obloqWriteString("123")
         item = serial.readString()
         item = serial.readString()
         item = serial.readString()
@@ -113,10 +95,7 @@ namespace MQTT {
         item = serial.readString()
         EMMQTT_SERIAL_INIT = EMMQTT_BOOL_TYPE_IS_TRUE
         emmqttClearRxBuffer();
-        // serial.clearRxBuffer();
         emmqttClearTxBuffer();
-        // serial.clearTxBuffer();
-        // onEvent();
     }
 
     /**
@@ -140,8 +119,6 @@ namespace MQTT {
         MQTT_SSIDPWD = PASSWORD;
         emmqtt_serial_init();
         emqtt_connect_wifi();
-
-        // 
     }
 
     /**
@@ -161,9 +138,6 @@ namespace MQTT {
     //% subcategory="MQTT模式"
     export function em_mqtt_connect(/*mqtt*/ serverIp: string, serverPort: number, clientId?: string, username?: string, clientPwd?: string
         ): void {
-       
-        // Emmqtt_serial_init();
-        // emqtt_connect_wifi();
         MQTT_CLIENT_ID = clientId;
         MQTT_CLIENT_NAME = username;
         MQTT_CLIENT_PASSWORD = clientPwd;
@@ -206,9 +180,6 @@ namespace MQTT {
 		EMMQTT_ALIYUN_DEVICESECRET = deviceSecret;
         emmqtt_connect_iot("aliyun");
     }
-
-
-    
 
     //% blockId=mqtt_publish_basic block="MQTT向话题(TOPIC) %topic 发送数据 %data"
     //% weight=100
@@ -264,7 +235,6 @@ namespace MQTT {
         basic.pause(100);
         serial.writeString("AT+CWJAP=\"" + MQTT_SSID + "\",\"" + MQTT_SSIDPWD + "\"\r\n");
         basic.pause(7000);
-		
     }
 	
 	function atReset(): void {
@@ -322,9 +292,6 @@ namespace MQTT {
         
     }
 
-
-
-
     function emmqtt_connect_iot(type: string): number {
         EMMQTT_MQTT_ICON = 1
         let iconnum = 0
@@ -346,16 +313,16 @@ namespace MQTT {
                 break
             } else if (EMMQTT_ANSWER_CMD == "MqttWifiConnectFailure") {
                 EMMQTT_ANSWER_CMD = EMMQTT_STR_TYPE_IS_NONE
-                return EMMQTT_ERROR_TYPE_IS_MQTT_CONNECT_FAILURE
+                return -4
             }
             basic.pause(1)
             _timeout += 1
         }
         if (_timeout >= 1000 && EMMQTT_ANSWER_CMD != "MqttWifiConneted") {
             EMMQTT_ANSWER_CMD = EMMQTT_STR_TYPE_IS_NONE
-            return EMMQTT_ERROR_TYPE_IS_MQTT_CONNECT_TIMEOUT
+            return -4
         }
-        return EMMQTT_ERROR_TYPE_IS_SUCCE
+        return 0
         //basic.showString("ok")
     }
     let Emqtt_message_str = "";
@@ -364,11 +331,9 @@ namespace MQTT {
         Emqtt_message_str += serial.readString();
         let size = Emqtt_message_str.length;
         let item: string = Emqtt_message_str + "";
-        // basic.showString(item);
-        // emmqttClearRxBuffer();
         if (item.indexOf("WIFI CONNECTED", 0) != -1) {
             EMMQTT_ANSWER_CMD = "MqttWifiConneted"
-            EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
+            // EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
             // basic.showString("mqtt connect success!");
             basic.showIcon(IconNames.Yes)
             basic.pause(1000);
@@ -403,7 +368,7 @@ namespace MQTT {
             MQTT_TOPIC = topicStr;
             mqttSubscribeHandlers[MQTT_TOPIC] && mqttSubscribeHandlers[MQTT_TOPIC](MQTT_MESSGE)
             EMMQTT_ANSWER_CMD = "SubOk"
-            EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
+            // EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
             Emqtt_message_str = "";
             return
         }else if (item.indexOf("STATUS:3", 0) != -1){
@@ -415,11 +380,6 @@ namespace MQTT {
         }else if (item.indexOf("HTTP/1.1 200 OK") != -1) {
             Emqtt_message_str = "";
             count = 1;
-            // basic.showNumber(0);
-            // let dataArr = item.split("\r\n\r\n");
-            // basic.showNumber(dataArr.length);
-            // let resultStr = dataArr[dataArr.length - 1];
-            // basic.showString(item);
         }else if(item == '0'){
             count = 0;
             Emqtt_message_str = "";
@@ -427,8 +387,6 @@ namespace MQTT {
          else {
             Emqtt_message_str = "";
              if(count > 0){
-                // count++;
-                // basic.showNumber(count);
                 HTTP_RESPONSE_STR += item + "emok";
              }
             //  basic.showString(item);
@@ -454,11 +412,6 @@ namespace MQTT {
     //% subcategory="HTTP模式"
     export function em_http_connect(/*mqtt*/ serverIp: string, serverPort: number
         ): void {
-        // Emmqtt_serial_init();
-        // emqtt_connect_wifi();
-        // MQTT_CLIENT_ID = clientId;
-        // MQTT_CLIENT_NAME = username;
-        // MQTT_CLIENT_PASSWORD = clientPwd;
         MQTT_SERVER_IP = serverIp;
         MQTT_SERVER_PORT = serverPort;
         emmqtt_connect_iot("http");
@@ -521,12 +474,10 @@ namespace MQTT {
         requestStr += "Content-Type: text/plain;charset=UTF-8\r\n";
         requestStr += "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36\r\n";
         requestStr += "Connection: keep-alive\r\n\r\n";
-        // serial.setRxBufferSize(200);
         serial.writeString(requestStr);
         basic.pause(1000);
        
         let arr = HTTP_RESPONSE_STR.split("emok");
-        // basic.showNumber(arr.length);
         if(arr.length >  4){
             let result = arr[arr.length - 4];
             HTTP_RESULT = (result.substr(0, result.length - 2));
