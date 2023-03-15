@@ -80,12 +80,12 @@ namespace MQTT {
     }
 
     function emmqtt_serial_init(): void {
-        let item = null;
+        // let item = null;
         //First send data through usb, avoid the first data scrambled.
         // obloqWriteString("123")
-        item = serial.readString()
-        item = serial.readString()
-        item = serial.readString()
+        // item = serial.readString()
+        // item = serial.readString()
+        // item = serial.readString()
         serial.redirect(
             EMMQTT_SERIAL_TX,
             EMMQTT_SERIAL_RX,
@@ -94,11 +94,11 @@ namespace MQTT {
         serial.setTxBufferSize(128);
         serial.setRxBufferSize(128);
         // obloqWriteString("\r")
-        item = serial.readString()
+        // item = serial.readString()
         EMMQTT_SERIAL_INIT = EMMQTT_BOOL_TYPE_IS_TRUE
-        emmqttClearRxBuffer();
-        // serial.clearRxBuffer();
-        emmqttClearTxBuffer();
+        // emmqttClearRxBuffer();
+        // // serial.clearRxBuffer();
+        // emmqttClearTxBuffer();
         // serial.clearTxBuffer();
         // onEvent();
     }
@@ -463,7 +463,7 @@ namespace MQTT {
     }
 
     function getMethod(topic: string): void{
-        emmqttClearRxBuffer();
+        // emmqttClearRxBuffer();
         let startStr = topic.substr(0, 1);
         if (startStr != "/") topic = "/" + topic;
         // basic.showString("a");
