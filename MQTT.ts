@@ -8,7 +8,7 @@ const EMMQTT_STR_TYPE_IS_NONE = ""
  */
 //% weight=10 color=#008B00 icon="\uf1eb" block="MQTT"
 namespace MQTT {
-    // let rev: string;
+    let rev: string;
     //serial
     let EMMQTT_SERIAL_INIT = EMMQTT_BOOL_TYPE_IS_FALSE
     let EMMQTT_SERIAL_TX = SerialPin.P2
@@ -27,6 +27,7 @@ namespace MQTT {
     let HTTP_RESULT = EMMQTT_STR_TYPE_IS_NONE;
     
     let EMMQTT_ANSWER_CMD = EMMQTT_STR_TYPE_IS_NONE
+    let EMMQTT_ANSWER_CONTENT = EMMQTT_STR_TYPE_IS_NONE
 	//阿里云三要素
 	let EMMQTT_ALIYUN_PRODUCTKEY = EMMQTT_STR_TYPE_IS_NONE
 	let EMMQTT_ALIYUN_DEVICENAME = EMMQTT_STR_TYPE_IS_NONE
@@ -79,10 +80,12 @@ namespace MQTT {
     }
 
     function emmqtt_serial_init(): void {
-        // let item = null;
-        // item = serial.readString()
-        // item = serial.readString()
-        // item = serial.readString()
+        let item = null;
+        //First send data through usb, avoid the first data scrambled.
+        // obloqWriteString("123")
+        item = serial.readString()
+        item = serial.readString()
+        item = serial.readString()
         serial.redirect(
             EMMQTT_SERIAL_TX,
             EMMQTT_SERIAL_RX,
@@ -91,10 +94,13 @@ namespace MQTT {
         serial.setTxBufferSize(128);
         serial.setRxBufferSize(128);
         // obloqWriteString("\r")
-        // item = serial.readString()
+        item = serial.readString()
         EMMQTT_SERIAL_INIT = EMMQTT_BOOL_TYPE_IS_TRUE
-        // emmqttClearRxBuffer();
-        // emmqttClearTxBuffer();
+        emmqttClearRxBuffer();
+        // serial.clearRxBuffer();
+        emmqttClearTxBuffer();
+        // serial.clearTxBuffer();
+        // onEvent();
     }
 
     /**
@@ -457,7 +463,7 @@ namespace MQTT {
     }
 
     function getMethod(topic: string): void{
-        // emmqttClearRxBuffer();
+        emmqttClearRxBuffer();
         let startStr = topic.substr(0, 1);
         if (startStr != "/") topic = "/" + topic;
         // basic.showString("a");
