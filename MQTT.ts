@@ -1,4 +1,3 @@
-
 const EMMQTT_BOOL_TYPE_IS_TRUE = true
 const EMMQTT_BOOL_TYPE_IS_FALSE = false
 const EMMQTT_STR_TYPE_IS_NONE = ""
@@ -458,7 +457,7 @@ namespace MQTT {
     }
 
     function getMethod(topic: string): void{
-        emmqttClearRxBuffer();
+        // emmqttClearRxBuffer();
         let startStr = topic.substr(0, 1);
         if (startStr != "/") topic = "/" + topic;
         // basic.showString("a");
